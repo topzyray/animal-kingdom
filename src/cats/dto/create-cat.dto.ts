@@ -1,5 +1,60 @@
+import {
+  IsArray,
+  IsBoolean,
+  IsDate,
+  IsDefined,
+  IsNotEmpty,
+  IsString,
+  IsInt,
+  IsOptional,
+} from 'class-validator';
+
 export class CreateCatDto {
+  @IsString()
+  @IsNotEmpty()
+  @IsDefined()
   name: string;
+
+  @IsInt()
+  @IsNotEmpty()
+  @IsDefined()
   age: number;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsDefined()
   breed: string;
+
+  @IsString()
+  @IsOptional()
+  color: string;
+
+  @IsInt()
+  @IsOptional()
+  weight: number;
+
+  @IsString()
+  @IsOptional()
+  gender: string;
+
+  @IsBoolean()
+  @IsOptional()
+  adopted: boolean;
+
+  @IsDate()
+  @IsOptional()
+  adoptedDate: Date;
+
+  // @IsArray()
+  // vaccinations: [{ conditions: string; treatment: string; date: Date }];
+
+  // medicalHistory: [{ condition: string; treatment: string; date: Date }];
+
+  @IsString()
+  @IsOptional()
+  photoUrl: string;
+
+  @IsString()
+  @IsOptional()
+  owner: string;
 }
