@@ -12,27 +12,27 @@ import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
 import { ParamsCatDto } from './dto/params-cat.dto';
 
-@Controller('cats')
+@Controller('animals/cats')
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
   @Post()
-  create(@Body() createCatDto: CreateCatDto) {
+  createCat(@Body() createCatDto: CreateCatDto) {
     return this.catsService.create(createCatDto);
   }
 
   @Get()
-  findAll() {
+  findAllCats() {
     return this.catsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param() paramsCatDto: ParamsCatDto) {
+  findCatById(@Param() paramsCatDto: ParamsCatDto) {
     return this.catsService.findOne(paramsCatDto.id);
   }
 
   @Patch(':id')
-  update(
+  updateCatById(
     @Param() paramsCatDto: ParamsCatDto,
     @Body() updateCatDto: UpdateCatDto,
   ) {
@@ -40,7 +40,12 @@ export class CatsController {
   }
 
   @Delete(':id')
-  remove(@Param() paramsCatDto: ParamsCatDto) {
+  removeCatById(@Param() paramsCatDto: ParamsCatDto) {
     return this.catsService.remove(paramsCatDto.id);
+  }
+
+  @Delete()
+  removeAllCats() {
+    return this.catsService.removeAll();
   }
 }

@@ -34,7 +34,6 @@ export class CatsService {
 
   async findOne(id: string): Promise<Cat> {
     const cat = await this.catModel.findById(id).exec();
-
     if (!cat) {
       throw new NotFoundException(`Cat with id ${id} not found`);
     }
@@ -58,5 +57,14 @@ export class CatsService {
       throw new NotFoundException(`Cat with id ${id} not found`);
     }
     return `Cat with id ${id} deleted successfully!`;
+  }
+
+  async removeAll() {
+    const deletedAllCat = await this.catModel.deleteMany();
+  
+    if (deletedAllCat.deletedCount === 0) {
+      throw new NotFoundException(`No cat resources found!`);
+    }
+    return `All cat resources deleted successfully!`;
   }
 }

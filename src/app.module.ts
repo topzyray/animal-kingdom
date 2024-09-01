@@ -17,6 +17,6 @@ import { CatsModule } from './cats/cats.module';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes();
+    consumer.apply(LoggerMiddleware).forRoutes('/');
   }
 }
