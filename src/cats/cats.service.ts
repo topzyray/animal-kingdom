@@ -8,6 +8,8 @@ import { UpdateCatDto } from './dto/update-cat.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cat } from './schema/cat.schema';
 import { Model } from 'mongoose';
+import { QueryCatDto } from './dto/query-cat.dto';
+import { SearchCatDto } from './dto/search-cat.dto';
 
 @Injectable()
 export class CatsService {
@@ -21,8 +23,13 @@ export class CatsService {
     return newCat;
   }
 
-  async findAll(): Promise<Cat[]> {
-    const allCat = await this.catModel.find();
+  async findAll(queryCatDto: QueryCatDto): Promise<Cat[]> {
+    const { page, limit } = queryCatDto;
+    const allCat = await this.catModel
+      .find()
+      .skip((+page - 1) * +limit)
+      .limit(+limit);
+
     if (!allCat) {
       throw new NotFoundException('Failed to fetch all cats');
     }
@@ -30,6 +37,21 @@ export class CatsService {
       throw new NotFoundException('No cats found');
     }
     return allCat;
+  }
+
+  async searchCat(searchCatDto: SearchCatDto) {
+    if (!searchCatDto.name && !searchCatDto.breed && !searchCatDto.color) {
+      throw new NotFoundException(
+        'No search criteria provided. Please provide a search criteria such as name, breed or color with value',
+      );
+    }
+    const cats = await this.catModel.find({ ...searchCatDto });
+    if (cats.length === 0) {
+      throw new NotFoundException(
+        'No cats found with provided search criteria',
+      );
+    }
+    return cats;
   }
 
   async findOne(id: string): Promise<Cat> {
@@ -59,12 +81,12 @@ export class CatsService {
     return `Cat with id ${id} deleted successfully!`;
   }
 
-  async removeAll() {
-    const deletedAllCat = await this.catModel.deleteMany();
-  
-    if (deletedAllCat.deletedCount === 0) {
-      throw new NotFoundException(`No cat resources found!`);
-    }
-    return `All cat resources deleted successfully!`;
-  }
+  // async removeAll() {
+  //   const deletedAllCat = await this.catModel.deleteMany();
+
+  //   if (deletedAllCat.deletedCount === 0) {
+  //     throw new NotFoundException(`No cat resources found!`);
+  //   }
+  //   return `All cat resources deleted successfully!`;
+  // }
 }

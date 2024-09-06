@@ -1,12 +1,11 @@
 import {
-  IsArray,
   IsBoolean,
-  IsDate,
   IsDefined,
   IsNotEmpty,
   IsString,
   IsInt,
   IsOptional,
+  IsDateString,
 } from 'class-validator';
 
 export class CreateCatDto {
@@ -41,7 +40,7 @@ export class CreateCatDto {
   @IsOptional()
   adopted: boolean;
 
-  @IsDate()
+  @IsDateString()
   @IsOptional()
   adoptedDate: Date;
 
