@@ -30,6 +30,7 @@ export class CatsController {
     };
   }
 
+ 
   @Get()
   async findAllCats(@Query() queryCatDto: QueryCatDto) {
     const data = await this.catsService.findAll(queryCatDto);

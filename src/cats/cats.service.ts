@@ -24,7 +24,7 @@ export class CatsService {
   }
 
   async findAll(queryCatDto: QueryCatDto): Promise<Cat[]> {
-    const { page, limit } = queryCatDto;
+    const { page = 1, limit = 10 } = queryCatDto;
     const allCat = await this.catModel
       .find()
       .skip((+page - 1) * +limit)
