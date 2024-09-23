@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { Logger, MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
@@ -17,6 +17,7 @@ import { HttpExceptionFilter } from './http-exception/http-exception.filter';
   controllers: [AppController],
   providers: [
     AppService,
+    Logger,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,

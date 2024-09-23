@@ -7,3 +7,5 @@ Task 2: Add search cats endpoint
 http://localhost:3000/api/v1/animals/cats/search?query=value
 Search query: name, color or breed
 To search cat by name, color, breed
+
+Task 3: Add global exception filters
