@@ -8,17 +8,18 @@ export class LoggerMiddleware implements NestMiddleware {
     const { method, originalUrl: url } = req;
     const reqTime = new Date().getTime();
     res.on('finish', () => {
-      const { statusCode } = res;
+      const { statusCode, statusMessage } = res;
       const resTime = new Date().getTime();
       if (statusCode === 201 || statusCode === 200) {
         this.logger.log(
           `${method} ${url} ${statusCode} - ${resTime - reqTime} ms`,
         );
-      } else {
-        this.logger.error(
-          `${method} ${url} ${statusCode} - ${resTime - reqTime} ms`,
-        );
       }
+      // else {
+      //   this.logger.error(
+      //     `${method} ${url} ${statusCode} ${statusMessage} - ${resTime - reqTime} ms`,
+      //   );
+      // }
     });
     next();
   }

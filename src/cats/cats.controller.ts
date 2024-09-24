@@ -7,6 +7,8 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -14,7 +16,12 @@ import { UpdateCatDto } from './dto/update-cat.dto';
 import { ParamsCatDto } from './dto/params-cat.dto';
 import { SearchCatDto } from './dto/search-cat.dto';
 import { QueryCatDto } from './dto/query-cat.dto';
+import { AuthenticationGuard } from 'src/guards/authentication.guard';
+import { AuthorizationGuard } from 'src/guards/authorization.guard';
+import { Roles } from 'src/decorators/roles.decorator';
 
+@Roles(['admin'])
+@UseGuards(AuthenticationGuard, AuthorizationGuard)
 @Controller('animals/cats')
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
@@ -30,9 +37,9 @@ export class CatsController {
     };
   }
 
- 
   @Get()
-  async findAllCats(@Query() queryCatDto: QueryCatDto) {
+  async findAllCats(@Query() queryCatDto: QueryCatDto, @Req() { user }) {
+    console.log(user);
     const data = await this.catsService.findAll(queryCatDto);
     return {
       success: true,
