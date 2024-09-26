@@ -64,8 +64,16 @@ export class CatsController {
     return this.catsService.remove(paramsCatDto.id);
   }
 
+  // For admins only
+
+  // @Post()
+  // async createManyCat(@Body() createCatDto: CreateCatDto[]) {
+  //   console.log(createCatDto);
+  //   // return this.catsService.createMany(createCatDto);
+  // }
+
   // @Delete()
   // async removeAllCats() {
-  //   return this.catsService.removeAll()
+  //   return this.catsService.removeAll();
   // }
 }

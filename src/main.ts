@@ -7,9 +7,9 @@ import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const loggerInstance = app.get(Logger)
-  const config = app.get(ConfigService)
-  app.useGlobalFilters(new HttpExceptionFilter(loggerInstance))
+  const loggerInstance = app.get(Logger);
+  const config = app.get(ConfigService);
+  app.useGlobalFilters(new HttpExceptionFilter(loggerInstance));
   app.useGlobalInterceptors(new CustomInterceptor());
   app.useGlobalPipes(
     new ValidationPipe({

@@ -80,4 +80,22 @@ export class CatsService {
     }
     return `Cat with id ${id} deleted successfully!`;
   }
+
+  // For admin only
+
+  // async createMany(createCatDto: CreateCatDto[]): Promise<Cat[]> {
+  //   const newCats = await this.catModel.insertMany(createCatDto);
+  //   if (!newCats) {
+  //     throw new NotImplementedException('Failed to create Cat');
+  //   }
+  //   return newCats;
+  // }
+
+  // async removeAll() {
+  //   const deletedCats = await this.catModel.deleteMany();
+  //   if (deletedCats.deletedCount === 0) {
+  //     throw new NotImplementedException(`Failed to delete all Cat resource!`);
+  //   }
+  //   return `All Cat resource deleted successfully!`;
+  // }
 }
