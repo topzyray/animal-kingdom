@@ -15,11 +15,6 @@ export class LoggerMiddleware implements NestMiddleware {
           `${method} ${url} ${statusCode} - ${resTime - reqTime} ms`,
         );
       }
-      // else {
-      //   this.logger.error(
-      //     `${method} ${url} ${statusCode} ${statusMessage} - ${resTime - reqTime} ms`,
-      //   );
-      // }
     });
     next();
   }

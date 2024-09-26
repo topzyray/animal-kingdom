@@ -9,6 +9,7 @@ import {
   Query,
   UseGuards,
   Req,
+  Headers,
 } from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -28,47 +29,26 @@ export class CatsController {
 
   @Post()
   async createCat(@Body() createCatDto: CreateCatDto) {
-    const data = await this.catsService.create(createCatDto);
-    return {
-      success: true,
-      status: 201,
-      message: 'Cat resource created successfully!',
-      data,
-    };
+    return this.catsService.create(createCatDto);
   }
 
   @Get()
-  async findAllCats(@Query() queryCatDto: QueryCatDto, @Req() { user }) {
-    console.log(user);
-    const data = await this.catsService.findAll(queryCatDto);
-    return {
-      success: true,
-      status: 200,
-      data_count: data.length,
-      data,
-    };
+  async findAllCats(
+    @Query() queryCatDto: QueryCatDto,
+    @Req() { user },
+    @Headers('accept-language') language,
+  ) {
+    return this.catsService.findAll(queryCatDto);
   }
 
   @Get('search')
   async searchCat(@Query() searchCatDto: SearchCatDto) {
-    const data = await this.catsService.searchCat(searchCatDto);
-    return {
-      success: true,
-      status: 200,
-      count: data.length,
-      data,
-    };
+    return this.catsService.searchCat(searchCatDto);
   }
 
   @Get(':id')
   async findCatById(@Param() paramsCatDto: ParamsCatDto) {
-    const data = await this.catsService.findOne(paramsCatDto.id);
-    return {
-      success: true,
-      status: 200,
-      message: 'Cat resource fetched successfully!',
-      data,
-    };
+    return this.catsService.findOne(paramsCatDto.id);
   }
 
   @Patch(':id')
@@ -76,32 +56,16 @@ export class CatsController {
     @Param() paramsCatDto: ParamsCatDto,
     @Body() updateCatDto: UpdateCatDto,
   ) {
-    const data = await this.catsService.update(paramsCatDto.id, updateCatDto);
-    return {
-      success: true,
-      status: 200,
-      message: 'Cat resource updated successfully!',
-      data,
-    };
+    return this.catsService.update(paramsCatDto.id, updateCatDto);
   }
 
   @Delete(':id')
   async removeCatById(@Param() paramsCatDto: ParamsCatDto) {
-    const data = await this.catsService.remove(paramsCatDto.id);
-    return {
-      success: true,
-      status: 200,
-      message: data,
-    };
+    return this.catsService.remove(paramsCatDto.id);
   }
 
   // @Delete()
   // async removeAllCats() {
-  //   const data = await this.catsService.removeAll();
-  //   return {
-  //     success: true,
-  //     status: 200,
-  //     message: data,
-  //   };
+  //   return this.catsService.removeAll()
   // }
 }
