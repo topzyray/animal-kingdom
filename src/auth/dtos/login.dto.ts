@@ -3,13 +3,11 @@ import {
   IsDefined,
   IsEmail,
   IsString,
-  Matches,
-  MinLength,
 } from 'class-validator';
 
 export class LoginDto {
   @IsEmail()
-  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => value.trim().toLocaleLowerCase())
   @IsDefined()
   email: string;
 

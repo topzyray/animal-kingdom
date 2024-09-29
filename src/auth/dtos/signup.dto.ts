@@ -10,7 +10,7 @@ import {
 
 export class SignupDto {
   @IsEmail()
-  @Transform(({ value }) => value.trim())
+  @Transform(({ value }) => value.trim().toLocaleLowerCase())
   @IsDefined()
   email: string;
 
