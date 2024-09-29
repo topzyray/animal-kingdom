@@ -21,8 +21,9 @@ import { AuthenticationGuard } from 'src/guards/authentication.guard';
 import { AuthorizationGuard } from 'src/guards/authorization.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 
-@Roles(['admin'])
-@UseGuards(AuthenticationGuard, AuthorizationGuard)
+// @Roles(['admin'])
+// @UseGuards(AuthenticationGuard, AuthorizationGuard)
+@UseGuards(AuthenticationGuard)
 @Controller('animals/cats')
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
@@ -35,9 +36,10 @@ export class CatsController {
   @Get()
   async findAllCats(
     @Query() queryCatDto: QueryCatDto,
-    @Req() { user },
+    @Req() { userId },
     @Headers('accept-language') language,
   ) {
+    console.log(userId);
     return this.catsService.findAll(queryCatDto);
   }
 

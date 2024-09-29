@@ -2,14 +2,13 @@ import { Transform } from 'class-transformer';
 import {
   IsDefined,
   IsEmail,
-  IsEnum,
   IsString,
   Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
 
-export class CreateOwnerDto {
+export class SignupDto {
   @IsEmail()
   @Transform(({ value }) => value.trim())
   @IsDefined()

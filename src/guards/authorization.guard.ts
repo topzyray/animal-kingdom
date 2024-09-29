@@ -8,8 +8,6 @@ import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { ROLES_KEY } from 'src/decorators/roles.decorator';
 
-const SECRET_KEY = 'JEPIOATPOII9VIAF9PEWOIVOCWRIVIHJKVV';
-
 @Injectable()
 export class AuthorizationGuard implements CanActivate {
   constructor(private reflector: Reflector) {}

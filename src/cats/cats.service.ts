@@ -1,7 +1,7 @@
 import {
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
-  NotImplementedException,
 } from '@nestjs/common';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
@@ -18,7 +18,7 @@ export class CatsService {
   async create(createCatDto: CreateCatDto): Promise<Cat> {
     const newCat = await this.catModel.create(createCatDto);
     if (!newCat) {
-      throw new NotImplementedException('Failed to create Cat');
+      throw new InternalServerErrorException('Failed to create Cat');
     }
     return newCat;
   }

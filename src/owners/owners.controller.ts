@@ -16,7 +16,7 @@ import { ConfigService } from '@nestjs/config';
 export class OwnersController {
   constructor(
     private readonly ownersService: OwnersService,
-    private configSerivce: ConfigService,
+    // private configSerivce: ConfigService,
   ) {}
 
   @Post()
