@@ -1,13 +1,13 @@
 import { IsOptional, IsString } from 'class-validator';
 
-export class SearchCatDto {
+export class SearchAnimalDto {
   @IsString()
   @IsOptional()
   name: string;
 
   @IsString()
   @IsOptional()
-  breed: string;
+  family: string;
 
   @IsString()
   @IsOptional()

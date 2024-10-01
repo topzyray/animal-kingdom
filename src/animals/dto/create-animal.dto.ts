@@ -1,17 +1,13 @@
-import {
-  IsDefined,
-  IsString,
-  IsOptional,
-} from 'class-validator';
+import { IsDefined, IsString, IsOptional, IsMongoId } from 'class-validator';
 
-export class CreateCatDto {
+export class CreateAnimalDto {
   @IsString()
   @IsDefined()
   name: string;
 
   @IsString()
   @IsDefined()
-  breed: string;
+  family: string;
 
   @IsString()
   @IsOptional()
@@ -24,8 +20,4 @@ export class CreateCatDto {
   @IsString()
   @IsOptional()
   photoUrl: string;
-
-  @IsString()
-  @IsOptional()
-  owner: string;
 }

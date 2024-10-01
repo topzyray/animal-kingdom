@@ -2,15 +2,15 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, SchemaTypes, Types } from 'mongoose';
 import { User } from 'src/auth/schemas/user.schema';
 
-export type CatDocument = HydratedDocument<Cat>;
+export type AnimalDocument = HydratedDocument<Animal>;
 
 @Schema({ timestamps: true, versionKey: false })
-export class Cat {
+export class Animal {
   @Prop()
   name: string;
 
   @Prop()
-  breed: string;
+  family: string;
 
   @Prop()
   color: string;
@@ -22,7 +22,7 @@ export class Cat {
   photoUrl: string;
 
   @Prop({ required: true, type: SchemaTypes.ObjectId, ref: User.name })
-  owner: Types.ObjectId;
+  user: Types.ObjectId;
 }
 
-export const CatSchema = SchemaFactory.createForClass(Cat);
+export const AnimalSchema = SchemaFactory.createForClass(Animal);

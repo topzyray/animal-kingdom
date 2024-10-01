@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CatsModule } from './cats/cats.module';
+import { AnimalsModule } from './animals/animals.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './http-exception/http-exception.filter';
 import { AuthModule } from './auth/auth.module';
@@ -36,7 +36,7 @@ import config from './confg/config';
       inject: [ConfigService],
       global: true,
     }),
-    CatsModule,
+    AnimalsModule,
     AuthModule,
     RolesModule,
   ],

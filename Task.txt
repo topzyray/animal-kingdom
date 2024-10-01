@@ -3,9 +3,9 @@ Task 1: Implement pagination and limit
 2. Page size
 
 
-Task 2: Add search cats endpoint
-http://localhost:3000/api/v1/animals/cats/search?query=value
-Search query: name, color or breed
-To search cat by name, color, breed
+Task 2: Add search animals endpoint
+http://localhost:3000/api/v1/animals/animals/search?query=value
+Search query: name, color or family
+To search cat by name, color, family
 
 Task 3: Add global exception filters
