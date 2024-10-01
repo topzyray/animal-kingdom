@@ -45,17 +45,20 @@ export class AnimalsController {
     return this.animalsService.searchAnimal(searchAnimalDto);
   }
 
-  // // TODO Implement getting all Animal for a specific user
-  // @Get('user')
-  // async findAllAnimalsByUser(@Param() paramsAnimalDto: ParamsAnimalDto, @Req() {userId}) {
-  //   return this.animalsService.findAllAnimalsByUser(paramsAnimalDto.id, userId);
-  // }
+  @UseGuards(AuthenticationGuard)
+  @Get('user')
+  async findAllAnimalsByUser(@Req() { userId }) {
+    return this.animalsService.findAllAnimalsByUser(userId);
+  }
 
-  // // TODO Implement getting Animal by id for a specific user
-  // @Get('user/:id')
-  // async findAnimalByIdByUser(@Param() paramsAnimalDto: ParamsAnimalDto, @Req() {userId}) {
-  //   return this.animalsService.findAnimalByIdByUser(paramsAnimalDto.id, userId);
-  // }
+  @UseGuards(AuthenticationGuard)
+  @Get('user/:id')
+  async findAnimalByIdByUser(
+    @Param() paramsAnimalDto: ParamsAnimalDto,
+    @Req() { userId },
+  ) {
+    return this.animalsService.findAnimalByIdByUser(paramsAnimalDto.id, userId);
+  }
 
   @Get(':id')
   async findAnimalById(@Param() paramsAnimalDto: ParamsAnimalDto) {

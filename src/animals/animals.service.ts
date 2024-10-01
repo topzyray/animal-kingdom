@@ -46,12 +46,12 @@ export class AnimalsService {
       throw new NotFoundException('Failed to fetch all animals');
     }
     if (allAnimal.length === 0) {
-      return 'No animals resource is empty!';
+      return 'Animals resource array is empty!';
     }
     return allAnimal;
   }
 
-  async searchAnimal(searchAnimalDto: SearchAnimalDto) {
+  async searchAnimal(searchAnimalDto: SearchAnimalDto): Promise<Animal[]> {
     if (
       !searchAnimalDto.name &&
       !searchAnimalDto.family &&
@@ -118,7 +118,7 @@ export class AnimalsService {
     return updatedAnimal;
   }
 
-  async remove(id: string, userId: string) {
+  async remove(id: string, userId: string): Promise<string> {
     const animals = await this.animalModel.findById(id);
 
     if (userId !== animals.user.toString()) {
@@ -132,6 +132,44 @@ export class AnimalsService {
       throw new NotFoundException(`Animal with id ${id} not found`);
     }
     return `Animal with id ${id} deleted successfully!`;
+  }
+
+  async findAllAnimalsByUser(userId: string): Promise<string | Animal[]> {
+    const allAnimalsPerUser = await this.animalModel
+      .find({ user: userId })
+      .populate({
+        path: 'user',
+        select: '-password -createdAt -updatedAt',
+        model: 'User',
+      });
+
+    if (!allAnimalsPerUser) {
+      throw new NotFoundException('Failed to fetch all animals!');
+    }
+    if (allAnimalsPerUser.length === 0) {
+      return 'No animals resource for current user!';
+    }
+    return allAnimalsPerUser;
+  }
+
+  async findAnimalByIdByUser(
+    animalId: string,
+    userId: string,
+  ): Promise<Animal> {
+    const singleAnimalByUser = await this.animalModel
+      .findOne({ _id: animalId, user: userId })
+      .populate({
+        path: 'user',
+        select: '-password -createdAt -updatedAt',
+        model: 'User',
+      })
+      .exec();
+    if (!singleAnimalByUser) {
+      throw new NotFoundException(
+        `Animal with id ${animalId} for the user not found`,
+      );
+    }
+    return singleAnimalByUser;
   }
 
   // For admin only
