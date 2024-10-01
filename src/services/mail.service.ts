@@ -23,7 +23,7 @@ export class MailService {
     token: string,
     firstName: string,
   ) {
-    const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+    const resetLink = `${this.configService.get<string>('frontend.url')}/reset-password?token=${token}`;
     const mailOptions = {
       from: `'Animal Kingdom' <${this.configService.get<string>('emailAuth.user')}>`,
       to: recipientEmail,
@@ -41,13 +41,12 @@ export class MailService {
     await this.transporter.sendMail(mailOptions);
   }
 
-  // TODO Implement SendVerificationEmail
   async sendVerificationEmail(
     recipientEmail: string,
     token: string,
     firstName: string,
   ) {
-    const verificationLink = `http://localhost:3000/verification?token=${token}`;
+    const verificationLink = `${this.configService.get<string>('frontend.url')}/verification?token=${token}`;
     const mailOptions = {
       from: `'Animal Kingdom' <${this.configService.get<string>('emailAuth.user')}>`,
       to: recipientEmail,

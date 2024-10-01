@@ -11,4 +11,7 @@ export default () => ({
     user: process.env.USER_EMAIL,
     pass: process.env.USER_PASS,
   },
+  frontend: {
+    url: process.env.FRONTEND_URL,
+  },
 });
