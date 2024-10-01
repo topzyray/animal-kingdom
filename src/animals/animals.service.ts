@@ -30,7 +30,7 @@ export class AnimalsService {
     return newAnimal;
   }
 
-  async findAll(queryAnimalDto: QueryAnimalDto): Promise<Animal[]> {
+  async findAll(queryAnimalDto: QueryAnimalDto): Promise<string | Animal[]> {
     const { page = 1, limit = 10 } = queryAnimalDto;
     const allAnimal = await this.animalModel
       .find()
@@ -46,7 +46,7 @@ export class AnimalsService {
       throw new NotFoundException('Failed to fetch all animals');
     }
     if (allAnimal.length === 0) {
-      throw new NotFoundException('No animals found');
+      return 'No animals resource is empty!';
     }
     return allAnimal;
   }

@@ -20,6 +20,6 @@ async function bootstrap() {
     }),
   );
   app.setGlobalPrefix('api/v1');
-  await app.listen(config.get('port'));
+  await app.listen(config.get('port') || 8000);
 }
 bootstrap();
