@@ -19,7 +19,6 @@ import { SearchCatDto } from './dto/search-cat.dto';
 import { QueryCatDto } from './dto/query-cat.dto';
 import { AuthenticationGuard } from 'src/guards/authentication.guard';
 import { AuthorizationGuard } from 'src/guards/authorization.guard';
-import { Roles } from 'src/decorators/roles.decorator';
 
 // @Roles(['admin'])
 // @UseGuards(AuthenticationGuard, AuthorizationGuard)

@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -21,6 +22,8 @@ import { nanoid } from 'nanoid';
 import { ResetToken } from './schemas/reset-token.schema';
 import { MailService } from 'src/services/mail.service';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
+import { VerifyEmailDto } from './dtos/verify-email.dto';
+import { EmailVerificationToken } from './schemas/verification-token.schema';
 
 @Injectable()
 export class AuthService {
@@ -30,6 +33,8 @@ export class AuthService {
     private refreshTokenModel: Model<RefreshToken>,
     @InjectModel(ResetToken.name)
     private resetTokenModel: Model<ResetToken>,
+    @InjectModel(EmailVerificationToken.name)
+    private emailVerificationModel: Model<EmailVerificationToken>,
     private jwtService: JwtService,
     private mailService: MailService,
   ) {}
@@ -55,8 +60,49 @@ export class AuthService {
       return new InternalServerErrorException('Fail to create user!');
     }
     // Extract password
-    const { password: createdPassword, ...rest } = newUser.toObject();
-    return { ...rest };
+    // const { password: createdPassword, ...rest } = newUser.toObject();
+    // return { ...rest };
+
+    const newUserObject = newUser.toObject();
+
+    // Generate email verification link
+    const expiryDate = new Date();
+    expiryDate.setHours(expiryDate.getHours() + 1);
+    const verificationToken = nanoid(64);
+    await this.emailVerificationModel.create({
+      token: verificationToken,
+      userId: newUserObject._id,
+      expiryDate,
+    });
+
+    // Send link to user by email
+    this.mailService.sendVerificationEmail(
+      email,
+      verificationToken,
+      newUserObject.firstName,
+    );
+
+    return 'Account created successfully. Please check your email to proceed.';
+  }
+
+  async emailVerification(verifyEmailData: VerifyEmailDto) {
+    const { verificationToken } = verifyEmailData;
+    const validToken = await this.emailVerificationModel.findOneAndDelete({
+      token: verificationToken,
+      expiryDate: { $gte: new Date() },
+    });
+
+    if (!validToken) {
+      throw new UnauthorizedException('Invalid link');
+    }
+
+    const user = await this.userModel.findById(validToken.userId);
+    if (!user) {
+      throw new InternalServerErrorException();
+    }
+    user.isVerified = true;
+    await user.save();
+    return 'User verified successfully! Proceed to login.';
   }
 
   async login(loginData: LoginDto) {
@@ -71,6 +117,40 @@ export class AuthService {
     const passwordMatch = await bcryptjs.compare(password, user.password);
     if (!passwordMatch) {
       throw new UnauthorizedException('Wrong credentials!');
+    }
+
+    if (user.isVerified === false) {
+      // Generate and send new email verification link
+      const existingEmailVerification =
+        await this.emailVerificationModel.findOne({ userId: user._id });
+
+      if (!existingEmailVerification) {
+        throw new NotFoundException('Invalid or expired token!');
+      }
+
+      if (existingEmailVerification.expiryDate >= new Date()) {
+        await this.emailVerificationModel.findOneAndDelete({
+          userId: user._id,
+          // id: existingEmailVerification._id,
+        });
+
+        const expiryDate = new Date();
+        expiryDate.setHours(expiryDate.getHours() + 1);
+        const verificationToken = nanoid(64);
+        await this.emailVerificationModel.create({
+          token: verificationToken,
+          userId: user._id,
+          expiryDate,
+        });
+
+        // Send link to user by email
+        this.mailService.sendVerificationEmail(
+          email,
+          verificationToken,
+          user.firstName,
+        );
+        return 'User not verified! Please verify your email to continue.';
+      }
     }
 
     // Generate JWT tokens

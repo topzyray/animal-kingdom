@@ -9,6 +9,10 @@ import {
 } from './schemas/referesh-token.schema';
 import { ResetToken, ResetTokenSchema } from './schemas/reset-token.schema';
 import { MailService } from 'src/services/mail.service';
+import {
+  EmailVerificationToken,
+  EmailVerificationTokenSchema,
+} from './schemas/verification-token.schema';
 
 @Module({
   imports: [
@@ -16,6 +20,10 @@ import { MailService } from 'src/services/mail.service';
       { name: User.name, schema: UserSchema },
       { name: RefreshToken.name, schema: RefreshTokenSchema },
       { name: ResetToken.name, schema: ResetTokenSchema },
+      {
+        name: EmailVerificationToken.name,
+        schema: EmailVerificationTokenSchema,
+      },
     ]),
   ],
   controllers: [AuthController],

@@ -27,6 +27,10 @@ export class CatsService {
     const { page = 1, limit = 10 } = queryCatDto;
     const allCat = await this.catModel
       .find()
+      .populate({
+        path: 'owner',
+        model: 'User',
+      })
       .skip((+page - 1) * +limit)
       .limit(+limit);
 
@@ -45,7 +49,10 @@ export class CatsService {
         'No search criteria provided. Please provide a search criteria such as name, breed or color with value',
       );
     }
-    const cats = await this.catModel.find({ ...searchCatDto });
+    const cats = await this.catModel.find({ ...searchCatDto }).populate({
+      path: 'owner',
+      model: 'User',
+    });
     if (cats.length === 0) {
       throw new NotFoundException(
         'No cats found with provided search criteria',
@@ -55,7 +62,13 @@ export class CatsService {
   }
 
   async findOne(id: string): Promise<Cat> {
-    const cat = await this.catModel.findById(id).exec();
+    const cat = await this.catModel
+      .findById(id)
+      .populate({
+        path: 'owner',
+        model: 'User',
+      })
+      .exec();
     if (!cat) {
       throw new NotFoundException(`Cat with id ${id} not found`);
     }

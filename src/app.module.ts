@@ -7,9 +7,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CatsModule } from './cats/cats.module';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './http-exception/http-exception.filter';
-import { OwnersModule } from './owners/owners.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { RolesModule } from './roles/roles.module';
 import config from './confg/config';
 
 @Module({
@@ -37,8 +37,8 @@ import config from './confg/config';
       global: true,
     }),
     CatsModule,
-    OwnersModule,
     AuthModule,
+    RolesModule,
   ],
   controllers: [AppController],
   providers: [

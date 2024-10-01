@@ -25,7 +25,6 @@ export class MailService {
   ) {
     const resetLink = `http://localhost:3000/reset-password?token=${token}`;
     const mailOptions = {
-      //   from: '"Animal Kingdom" <maddison53@ethereal.email>',
       from: `'Animal Kingdom' <${this.configService.get<string>('emailAuth.user')}>`,
       to: recipientEmail,
       subject: 'Password Reset Link',
@@ -33,6 +32,30 @@ export class MailService {
         <p>Dear ${firstName}, </p>
         <p>You requested for a password reset. Click the reset link below to reset your password: </p>
         <a href="${resetLink}" style="display: block; cursor: pointer;"><button style="padding: 0.5rem 0.8rem; border-radius: 5px; cursor: pointer;">Reset Password</button></a>
+        <p><em>If this is not you, please ignore this email.</em></p>
+        <p>Thank you</p>
+        <p>Animal Kingdom & Co.</p>
+      </section>`,
+    };
+
+    await this.transporter.sendMail(mailOptions);
+  }
+
+  // TODO Implement SendVerificationEmail
+  async sendVerificationEmail(
+    recipientEmail: string,
+    token: string,
+    firstName: string,
+  ) {
+    const verificationLink = `http://localhost:3000/verification?token=${token}`;
+    const mailOptions = {
+      from: `'Animal Kingdom' <${this.configService.get<string>('emailAuth.user')}>`,
+      to: recipientEmail,
+      subject: 'Email Verification Link',
+      html: `<section>
+        <p>Dear ${firstName}, </p>
+        <p>Thank you for registering. Click the verification link below to verify your email: </p>
+        <a href="${verificationLink}" style="display: block; cursor: pointer;"><button style="padding: 0.5rem 0.8rem; border-radius: 5px; cursor: pointer;">Verify Email</button></a>
         <p><em>If this is not you, please ignore this email.</em></p>
         <p>Thank you</p>
         <p>Animal Kingdom & Co.</p>
